@@ -66,7 +66,34 @@ Read it with **oirfile** (pure Python, BSD-3, no JVM) or **Bio-Formats**.
 | `napari_channels.py` | napari viewer, one layer per channel |
 | `open_merge.ijm` | ImageJ macro for composite view + auto contrast |
 | `channels.cfg.example` | per-channel name/color/ex/em template |
+| `copy_from_disc.bat` | copy a DVD/CD without inheriting Hidden/System attrs |
 | `*.bat` | Windows double-click wrappers (use `pythonw` for GUI) |
+
+## Copying from Optical Media (DVD/CD)
+
+Optical volumes (UDF) often mark directories **Hidden + System + ReadOnly**
+(PowerShell shows `d-rhs-`). robocopy's **default `/DCOPY` is `DA`** (Data +
+Attributes), so a plain `robocopy E:\DISC D:\out /E` copies those attributes and
+the destination folders become **hidden** — they appear to vanish in Explorer.
+
+**Use these flags instead:**
+
+```bat
+robocopy "E:\DISC" "D:\out" /E /R:3 /W:5 /NP /DCOPY:D /A-:SH
+```
+
+- `/DCOPY:D` — copy directory **data only**, never attributes
+- `/A-:SH` — clear **H**idden + **S**ystem on whatever was already copied
+  (harmless with `/DCOPY:D`; repairs an earlier default run)
+
+Already ran it the default way and folders disappeared? Fix in place:
+
+```bat
+attrib -h -s -r "D:\out\*" /s /d
+```
+
+Check attributes with `Get-ChildItem -Force` (look for `h`/`s` in the Mode
+column), or `attrib "D:\out"`. `scripts/copy_from_disc.bat` wraps the safe flags.
 
 ## Windows Notes
 

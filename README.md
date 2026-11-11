@@ -60,6 +60,23 @@ On real 4096×4096, 2-channel, 12-bit OIR files:
 - output ~27 MB (≈40% of raw)
 - OME-XML carries `PhysicalSizeX/Y` from `coord_scales` (e.g. 0.0777 µm/px)
 
+## Copying from a DVD/CD
+
+Optical discs mark directories **Hidden + System** (`d-rhs-` in PowerShell).
+robocopy's default `/DCOPY` is `DA`, which copies those attributes — the target
+folders then look invisible in Explorer.
+
+```bat
+robocopy "E:\DISC" "D:\out" /E /R:3 /W:5 /NP /DCOPY:D /A-:SH
+```
+
+- `/DCOPY:D` — directory data only, no attributes
+- `/A-:SH` — clear Hidden + System on already-copied items
+
+Repair an earlier run: `attrib -h -s -r "D:\out\*" /s /d`
+
+`scripts/copy_from_disc.bat` does all of this.
+
 ## Gotchas
 
 - OIR metadata can list **more channels than pixel planes** — map by order.
