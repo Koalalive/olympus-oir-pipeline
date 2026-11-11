@@ -1,0 +1,8 @@
+# Core (required for conversion)
+oirfile>=2026.10.22
+tifffile>=2024.1
+numpy
+Pillow
+
+# Optional: GUI viewer
+# napari[all]>=0.5

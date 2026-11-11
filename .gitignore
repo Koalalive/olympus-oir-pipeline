@@ -1,0 +1,23 @@
+# Generated data and local config
+*.oir
+*.OIR
+*.poir
+*.POIR
+*.ome.tif
+*.ome.tiff
+ome/
+merge_rgb/
+
+# channels.cfg is machine/experiment specific
+channels.cfg
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# OS
+Thumbs.db
+.DS_Store
